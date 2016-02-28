@@ -21,6 +21,7 @@
       list-style-type: none;
       padding-right: 5px;
       margin-bottom: 20px;
+      margin-top: 20px;
       float: right;
     }
       .sidebar-item-active .sidebar-item-name {
@@ -31,6 +32,7 @@
     .sidebar-item {
       list-style-type: none;
       padding-right: 5px;
+      margin-top: 20px;
     }
 
     .sidebar-item .sidebar-item-name:hover {

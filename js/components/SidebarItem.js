@@ -14,7 +14,7 @@ var SidebarItem = React.createClass({
   render: function() {
     return (
       <li className={this.generateClassName(this.props.isActive)}>
-        <div className="sidebar-item-name">{this.props.name}</div>
+        <div className="sidebar-item-name" onClick={this.props.onClick}>{this.props.name}</div>
       </li>
     )
   }

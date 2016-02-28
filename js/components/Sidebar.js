@@ -20,7 +20,7 @@ var Sidebar = React.createClass({
         isActive = true;
       }
       sidebarItems.push(
-        <SidebarItem name={option} key={option} isActive={isActive}/>
+        <SidebarItem name={option} key={option} isActive={isActive} onClick={this.props.onClick}/>
       );
       counter++;
     }.bind(this));

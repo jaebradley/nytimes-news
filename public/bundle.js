@@ -59,14 +59,19 @@
 
 	  getInitialState() {
 	    return {
+	      shareType: "mostviewed",
+	      timePeriod: 1,
+	      popualarSection: "all-sections",
+	      offset: 0,
 	      section: "home",
 	      activeSidebarItemIndex: 0,
-	      topArticles: Store.getTopArticles()
+	      articles: Store.getTopArticles()
 	    };
 	  },
 
 	  componentDidMount() {
 	    ActionCreator.getTopArticles(this.state.section);
+	    ActionCreator.getPopularArticles(this.state.shareType, this.state.popualarSection, this.state.timePeriod, this.state.offset);
 
 	    Store.addChangeListener(this.onChange);
 	  },
@@ -76,17 +81,39 @@
 	  },
 
 	  onChange() {
-	    this.setState({
-	      topArticles: Store.getTopArticles()
-	    });
+	    if (this.state.activeSidebarItemIndex == 0) {
+	      this.setState({
+	        articles: Store.getTopArticles()
+	      })
+	    } else {
+	      this.setState({
+	        articles: Store.getPopularArticles()
+	      })
+	    }
+	  },
+
+	  handleSidebarClick: function(e) {
+	    if (e.target.outerText == "Top") {
+	      ActionCreator.getTopArticles(this.state.section);
+	      this.setState({
+	        activeSidebarItemIndex: 0,
+	        articles: Store.getTopArticles()
+	      })
+	    } else {
+	      ActionCreator.getPopularArticles(this.state.shareType, this.state.popualarSection, this.state.timePeriod, this.state.offset);
+	      this.setState({
+	        activeSidebarItemIndex: 1,
+	        articles: Store.getPopularArticles()
+	      })
+	    }
 	  },
 
 	  render: function() {
 	    return (
 	      React.createElement("div", {className: "content"}, 
-	        React.createElement(Sidebar, {activeSidebarItemIndex: this.state.activeSidebarItemIndex}), 
+	        React.createElement(Sidebar, {activeSidebarItemIndex: this.state.activeSidebarItemIndex, onClick: this.handleSidebarClick}), 
 	        React.createElement("div", {className: "articles-container"}, 
-	          React.createElement(Articles, {articles: this.state.topArticles})
+	          React.createElement(Articles, {articles: this.state.articles})
 	        )
 	      )
 	    )
@@ -19725,7 +19752,7 @@
 	}
 
 	function setPopularArticles (popularArticles) {
-	  _popularArticles = popularArticles;
+	  _popularArticles = popularArticles.results;
 	}
 
 	var Store = assign({}, EventEmitter.prototype, {
@@ -20504,10 +20531,19 @@
 	    ArticleFetcher
 	      .fetchTopArticles(section)
 	      .then(function (topArticles) {
-	        console.log("getting top articles");
 	        Dispatcher.handleServerAction({
 	          actionType: ActionConstants.GET_TOP_ARTICLES,
 	          articles: DeepCopy(topArticles)
+	        });
+	      });
+	  },
+	  getPopularArticles: function (type, section, timePeriod, offset) {
+	    ArticleFetcher
+	      .fetchPopularArticles(type, section, timePeriod, offset)
+	      .then(function (popularArticles) {
+	        Dispatcher.handleServerAction({
+	          actionType: ActionConstants.GET_POPULAR_ARTICLES,
+	          articles: DeepCopy(popularArticles)
 	        });
 	      });
 	  },
@@ -22643,6 +22679,7 @@
 
 	var ArticleFetcher = {
 	  topArticlesEndpoint: "http://api.nytimes.com/svc/topstories/v1/",
+	  popularArticlesEndpoint: "http://api.nytimes.com/svc/mostpopular/v2/",
 	  topArticlesKey: "f2fbfa50507156a43eeb14edac17cf5a:18:74561743",
 	  popularArticlesKey: "8bdaddd948ffdaf714137724df2b6166:6:74561743",
 
@@ -22650,8 +22687,27 @@
 	    return this.topArticlesEndpoint + section + ".json?api-key=" + encodeURIComponent(this.topArticlesKey);
 	  },
 
+	  getPopularArticlesUrl: function(type, sections, timePeriod, offset) {
+	    return this.popularArticlesEndpoint + type + "/" + sections + "/" + timePeriod + ".json?api-key=" + encodeURIComponent(this.popularArticlesKey) + "&offset=" + offset;
+	  },
+
 	  fetchTopArticles: function(section) {
 	    var url = this.getTopArticlesUrl(section);
+	    return new Promise(function (resolve, reject) {
+	      request
+	        .get(url)
+	        .end(function (err, res) {
+	          if (res.status === 404) {
+	            reject();
+	          } else {
+	            resolve(JSON.parse(res.text));
+	          }
+	      });
+	    });
+	  },
+
+	  fetchPopularArticles: function(type, sections, timePeriod, offset) {
+	    var url = this.getPopularArticlesUrl(type, sections, timePeriod, offset);
 	    return new Promise(function (resolve, reject) {
 	      request
 	        .get(url)
@@ -25177,7 +25233,7 @@
 	        isActive = true;
 	      }
 	      sidebarItems.push(
-	        React.createElement(SidebarItem, {name: option, key: option, isActive: isActive})
+	        React.createElement(SidebarItem, {name: option, key: option, isActive: isActive, onClick: this.props.onClick})
 	      );
 	      counter++;
 	    }.bind(this));
@@ -25216,7 +25272,7 @@
 	  render: function() {
 	    return (
 	      React.createElement("li", {className: this.generateClassName(this.props.isActive)}, 
-	        React.createElement("div", {className: "sidebar-item-name"}, this.props.name)
+	        React.createElement("div", {className: "sidebar-item-name", onClick: this.props.onClick}, this.props.name)
 	      )
 	    )
 	  }
@@ -25239,11 +25295,19 @@
 	  createArticles: function(articlesData) {
 	    var articles = [];
 	    articlesData.forEach(function(article) {
-	      if ('multimedia' in article && article.multimedia.length > 1 && 'title' in article && 'abstract' in article && 'url' in article) {
+	      if ("media" in article && article.media.length == 1 && "media-metadata" in article.media[0] && article.media[0]["media-metadata"].length > 7) {
+	        var imageSource = article.media[0]["media-metadata"][7].url;
+	      }
+
+	      if ('multimedia' in article && article.multimedia.length > 1) {
+	       var imageSource = article.multimedia[1].url; 
+	      }
+
+	      if ('title' in article && 'abstract' in article && 'url' in article) {
 	        articles.push(
 	          React.createElement(Article, {
 	            url: article.url, 
-	            imageSource: article.multimedia[1].url, 
+	            imageSource: imageSource, 
 	            title: article.title, 
 	            abstract: article.abstract})
 	        );

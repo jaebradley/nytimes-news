@@ -9,10 +9,19 @@ var ActionCreator = {
     ArticleFetcher
       .fetchTopArticles(section)
       .then(function (topArticles) {
-        console.log("getting top articles");
         Dispatcher.handleServerAction({
           actionType: ActionConstants.GET_TOP_ARTICLES,
           articles: DeepCopy(topArticles)
+        });
+      });
+  },
+  getPopularArticles: function (type, section, timePeriod, offset) {
+    ArticleFetcher
+      .fetchPopularArticles(type, section, timePeriod, offset)
+      .then(function (popularArticles) {
+        Dispatcher.handleServerAction({
+          actionType: ActionConstants.GET_POPULAR_ARTICLES,
+          articles: DeepCopy(popularArticles)
         });
       });
   },

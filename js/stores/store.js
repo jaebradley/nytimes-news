@@ -20,7 +20,7 @@ function setTopArticles (topArticles) {
 }
 
 function setPopularArticles (popularArticles) {
-  _popularArticles = popularArticles;
+  _popularArticles = popularArticles.results;
 }
 
 var Store = assign({}, EventEmitter.prototype, {
