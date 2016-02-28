@@ -7,6 +7,7 @@ var SidebarItem = React.createClass({
 
     return (
       <li>
+        {this.props.name}
       </li>
     )
   }

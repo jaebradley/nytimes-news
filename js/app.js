@@ -6,27 +6,30 @@ var React = require('react');
 var Store = require('./stores/Store');
 var ActionCreator = require('./actions/ActionCreator');
 
+var Sidebar = require('./components/Sidebar');
+
 var App = React.createClass({
 
   getInitialState() {
       return {
-          
+          section: "home",
+          topArticles: []
       };
   },
 
   componentDidMount() {
-      ActionCreator.getStartLocationAutocompleteData(this.state.startAddress);
-      ActionCreator.getEndLocationAutocompleteData(this.state.endAddress);
+      ActionCreator.getTopArticles(this.state.startAddress);
 
       this.setState({
-        startAddressLocationAutocompleteData: Store.getStartLocationAutocompleteData(),
-        endAddressLocationAutocompleteData: Store.getEndLocationAutocompleteData()
+        topArticles: Store.getTopArticles()
       });
   },
 
   render: function() {
     return (
-      
+      <div>
+        <Sidebar />
+      </div>
     )
   }
 });
