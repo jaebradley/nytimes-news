@@ -1,0 +1,6 @@
+"use es6";
+
+module.exports = {
+  GET_TOP_ARTICLES: "GET_TOP_ARTICLES",
+  GET_POPULAR_ARTICLES: "GET_POPULAR_ARTICLES"
+};
