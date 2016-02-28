@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "New York Times News",
-  "version": "0.5",
+  "version": "0.1",
   "content_scripts": [
     {
       "matches": [

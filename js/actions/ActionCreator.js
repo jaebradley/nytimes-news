@@ -9,7 +9,8 @@ var ActionCreator = {
     ArticleFetcher
       .fetchTopArticles(section)
       .then(function (topArticles) {
-        Dispatcher.handleViewAction({
+        console.log("getting top articles");
+        Dispatcher.handleServerAction({
           actionType: ActionConstants.GET_TOP_ARTICLES,
           articles: DeepCopy(topArticles)
         });

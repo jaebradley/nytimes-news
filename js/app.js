@@ -7,28 +7,41 @@ var Store = require('./stores/Store');
 var ActionCreator = require('./actions/ActionCreator');
 
 var Sidebar = require('./components/Sidebar');
+var Articles = require('./components/Articles');
 
 var App = React.createClass({
 
   getInitialState() {
-      return {
-          section: "home",
-          topArticles: []
-      };
+    return {
+      section: "home",
+      activeSidebarItemIndex: 0,
+      topArticles: Store.getTopArticles()
+    };
   },
 
   componentDidMount() {
-      ActionCreator.getTopArticles(this.state.startAddress);
+    ActionCreator.getTopArticles(this.state.section);
 
-      this.setState({
-        topArticles: Store.getTopArticles()
-      });
+    Store.addChangeListener(this.onChange);
+  },
+
+  componentWillUnmount() {
+      Store.removeChangeListener(this.onChange);
+  },
+
+  onChange() {
+    this.setState({
+      topArticles: Store.getTopArticles()
+    });
   },
 
   render: function() {
     return (
-      <div>
-        <Sidebar />
+      <div className="content">
+        <Sidebar activeSidebarItemIndex={this.state.activeSidebarItemIndex} />
+        <div className={"articles-container"}>
+          <Articles articles={this.state.topArticles} />
+        </div>
       </div>
     )
   }

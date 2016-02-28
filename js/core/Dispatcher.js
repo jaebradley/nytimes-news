@@ -13,7 +13,7 @@ var Dispatcher = assign(new Flux.Dispatcher(), {
    * @param {object} action The details of the action, including the action's
    * type and additional data coming from the view.
    */
-  handleViewAction: function (action) {
+  handleServerAction: function (action) {
     var payload = {
       action: action
     };

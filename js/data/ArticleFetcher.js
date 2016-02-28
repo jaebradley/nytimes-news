@@ -8,12 +8,12 @@ var ArticleFetcher = {
   topArticlesKey: "f2fbfa50507156a43eeb14edac17cf5a:18:74561743",
   popularArticlesKey: "8bdaddd948ffdaf714137724df2b6166:6:74561743",
 
-  getUrl: function(section) {
-    return this.topArticlesEndpoint + section + ".json?api-key=" + this.topArticlesKey;
+  getTopArticlesUrl: function(section) {
+    return this.topArticlesEndpoint + section + ".json?api-key=" + encodeURIComponent(this.topArticlesKey);
   },
 
-  fetchTopArticles: function(address) {
-    var url = this.getUrl(address);
+  fetchTopArticles: function(section) {
+    var url = this.getTopArticlesUrl(section);
     return new Promise(function (resolve, reject) {
       request
         .get(url)
@@ -21,7 +21,7 @@ var ArticleFetcher = {
           if (res.status === 404) {
             reject();
           } else {
-            resolve(res.body);
+            resolve(JSON.parse(res.text));
           }
       });
     });

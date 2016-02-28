@@ -16,7 +16,7 @@ var _popularArticles = [];
 
  
 function setTopArticles (topArticles) {
-  _topArticles = topArticles;
+  _topArticles = topArticles.results;
 }
 
 function setPopularArticles (popularArticles) {

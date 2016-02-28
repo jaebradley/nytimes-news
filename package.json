@@ -24,7 +24,8 @@
     "react-dom": "^0.14.0",
     "superagent": "1.7.2",
     "deepcopy": "latest",
-    "flux": "latest"
+    "flux": "latest",
+    "object-assign": "latest"
   },
   "devDependencies": {
     "jsx-loader": "^0.12.2",

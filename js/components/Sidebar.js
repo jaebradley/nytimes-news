@@ -2,7 +2,7 @@
 
 var React = require('react');
 
-var SidebarItem = require('SidebarItem');
+var SidebarItem = require('./SidebarItem');
 
 const options = [
   'Top',
@@ -13,18 +13,24 @@ var Sidebar = React.createClass({
 
   createSidebarItems: function() {
     sidebarItems = [];
+    var counter = 0;
     options.forEach(function(option) {
+      var isActive = false;
+      if (this.props.activeSidebarItemIndex == counter) {
+        isActive = true;
+      }
       sidebarItems.push(
-        <SidebarItem name={option} />
+        <SidebarItem name={option} key={option} isActive={isActive}/>
       );
-    });
+      counter++;
+    }.bind(this));
     return sidebarItems;
   },
 
   render: function() {
 
     return (
-      <ul>
+      <ul className="sidebar">
         {this.createSidebarItems()}
       </ul>
     )

@@ -3,11 +3,18 @@
 var React = require('react');
 
 var SidebarItem = React.createClass({
-  render: function() {
+  generateClassName: function(isActive) {
+    if (isActive) {
+      return "sidebar-item-active";
+    }
 
+    return "sidebar-item";
+  },
+
+  render: function() {
     return (
-      <li>
-        {this.props.name}
+      <li className={this.generateClassName(this.props.isActive)}>
+        <div className="sidebar-item-name">{this.props.name}</div>
       </li>
     )
   }

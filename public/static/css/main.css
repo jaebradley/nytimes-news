@@ -1,0 +1,59 @@
+#nytimes-news {
+  width: 400px;
+  height: 400px;
+  font-family: 'Times New Roman';
+}
+
+.content {
+
+}
+
+  .sidebar {
+    border-right: 1px solid;
+    position: absolute;
+    top: 50%;
+    margin-top: -50px;
+    display: inline-block;
+    float: left;
+  }
+
+    .sidebar-item-active {
+      list-style-type: none;
+      padding-right: 5px;
+      margin-bottom: 20px;
+      margin-top: 20px;
+      float: right;
+    }
+      .sidebar-item-active .sidebar-item-name {
+        border-bottom: 1px solid;
+        display: inline-block;
+      }
+
+    .sidebar-item {
+      list-style-type: none;
+      padding-right: 5px;
+      margin-bottom: 20px;
+      margin-top: 20px;
+    }
+
+    .sidebar-item:hover {
+      background-color: grey;
+    }
+
+  .articles-container {
+    height: 300px;
+    overflow: auto;
+    width: 75%;
+    float: right;
+    top: 50%;
+    display: inline-block;
+    padding-top: 45px;
+  }
+
+    .articles {
+      
+    }
+
+      .article {
+        list-style-type: none;
+      }
