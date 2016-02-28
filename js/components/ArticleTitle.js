@@ -7,9 +7,9 @@ var ArticleTitle = React.createClass({
   render: function() {
 
     return (
-      <div>
-        {this.props.title}
-      </div>
+      <h2
+        className="article-title">{this.props.title}
+      </h2>
     )
   }
 });
