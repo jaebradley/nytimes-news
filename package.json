@@ -1,0 +1,33 @@
+{
+  "name": "nytimes-news",
+  "version": "1.0.0",
+  "description": "",
+  "main": "js/app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jaebradley/nytimes-news"
+  },
+  "author": "Jae Bradley",
+  "license": "mit",
+  "scripts": {
+    "start": "npm start",
+    "build": "./node_modules/.bin/webpack",
+    "dev-server": "node_modules/.bin/http-server -p 3000 public/",
+    "watch:start": "watch 'npm start'"
+  },
+  "engines": {
+    "node": "4.2.2"
+  },
+  "dependencies": {
+    "es6-promise": "^2.0.1",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.0",
+    "superagent": "1.7.2",
+    "deepcopy": "latest",
+    "flux": "latest"
+  },
+  "devDependencies": {
+    "jsx-loader": "^0.12.2",
+    "webpack": "^1.5.3"
+  }
+}
