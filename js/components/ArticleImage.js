@@ -6,7 +6,7 @@ var ArticleImage = React.createClass({
 
   render: function() {
     return (
-      <img src={this.props.imageSource}/>
+      <a href={this.props.url}><img src={this.props.imageSource}/></a>
     );
   }
 });

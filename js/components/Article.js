@@ -12,9 +12,11 @@ var Article = React.createClass({
 
     return (
       <li className="article">
-        <ArticleImage imageSource={this.props.imageSource} />
-        <ArticleTitle title={this.props.title} />
-        <ArticleAbstract abstract={this.props.abstract} />
+        <ArticleImage imageSource={this.props.imageSource} url={this.props.url} />
+        <div className="article-details">
+          <ArticleTitle title={this.props.title} url={this.props.url} />
+          <ArticleAbstract abstract={this.props.abstract} />
+        </div>
       </li>
     );
   }

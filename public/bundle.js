@@ -25239,15 +25239,17 @@
 	  createArticles: function(articlesData) {
 	    var articles = [];
 	    articlesData.forEach(function(article) {
-	      if ('multimedia' in article && article.multimedia.length > 1 && 'title' in article && 'abstract' in article) {
+	      if ('multimedia' in article && article.multimedia.length > 1 && 'title' in article && 'abstract' in article && 'url' in article) {
 	        articles.push(
 	          React.createElement(Article, {
+	            url: article.url, 
 	            imageSource: article.multimedia[1].url, 
 	            title: article.title, 
 	            abstract: article.abstract})
 	        );
 	      }
 	    });
+
 	    return articles;
 	  },
 
@@ -25280,9 +25282,11 @@
 
 	    return (
 	      React.createElement("li", {className: "article"}, 
-	        React.createElement(ArticleImage, {imageSource: this.props.imageSource}), 
-	        React.createElement(ArticleTitle, {title: this.props.title}), 
-	        React.createElement(ArticleAbstract, {abstract: this.props.abstract})
+	        React.createElement(ArticleImage, {imageSource: this.props.imageSource, url: this.props.url}), 
+	        React.createElement("div", {className: "article-details"}, 
+	          React.createElement(ArticleTitle, {title: this.props.title, url: this.props.url}), 
+	          React.createElement(ArticleAbstract, {abstract: this.props.abstract})
+	        )
 	      )
 	    );
 	  }
@@ -25302,7 +25306,7 @@
 
 	  render: function() {
 	    return (
-	      React.createElement("img", {src: this.props.imageSource})
+	      React.createElement("a", {href: this.props.url}, React.createElement("img", {src: this.props.imageSource}))
 	    );
 	  }
 	});
@@ -25322,8 +25326,8 @@
 	  render: function() {
 
 	    return (
-	      React.createElement("div", null, 
-	        this.props.title
+	      React.createElement("h2", {className: "article-title"}, 
+	        React.createElement("a", {href: this.props.url}, this.props.title)
 	      )
 	    )
 	  }
@@ -25344,8 +25348,8 @@
 	  render: function() {
 
 	    return (
-	      React.createElement("div", null, 
-	        this.props.abstract
+	      React.createElement("div", {
+	        className: "article-abstract"}, this.props.abstract
 	      )
 	    )
 	  }

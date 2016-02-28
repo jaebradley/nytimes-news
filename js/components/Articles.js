@@ -9,15 +9,17 @@ var Articles = React.createClass({
   createArticles: function(articlesData) {
     var articles = [];
     articlesData.forEach(function(article) {
-      if ('multimedia' in article && article.multimedia.length > 1 && 'title' in article && 'abstract' in article) {
+      if ('multimedia' in article && article.multimedia.length > 1 && 'title' in article && 'abstract' in article && 'url' in article) {
         articles.push(
           <Article 
+            url={article.url}
             imageSource={article.multimedia[1].url}
             title={article.title}
             abstract={article.abstract} />
         );
       }
     });
+
     return articles;
   },
 

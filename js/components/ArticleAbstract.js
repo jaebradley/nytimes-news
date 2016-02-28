@@ -7,8 +7,8 @@ var ArticleAbstract = React.createClass({
   render: function() {
 
     return (
-      <div>
-        {this.props.abstract}
+      <div
+        className="article-abstract">{this.props.abstract}
       </div>
     )
   }

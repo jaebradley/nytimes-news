@@ -7,8 +7,8 @@ var ArticleTitle = React.createClass({
   render: function() {
 
     return (
-      <h2
-        className="article-title">{this.props.title}
+      <h2 className="article-title">
+        <a href={this.props.url}>{this.props.title}</a>
       </h2>
     )
   }
