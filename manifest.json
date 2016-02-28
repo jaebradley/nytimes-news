@@ -17,8 +17,9 @@
   "background": {
     "scripts": ["js/background.js"]
   },
-  "permissions": [
-    "storage",
-    "notifications" 
-  ]
+  "permissions": ["webRequest", 
+                  "webRequestBlocking",
+                  "http://www.nytimes.com/*",
+                  "tabs"
+                  ]
 }

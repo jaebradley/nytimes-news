@@ -25365,6 +25365,7 @@
 	"use es6";
 
 	var React = __webpack_require__(147);
+	var request = __webpack_require__(177);
 
 	var ArticleImage = React.createClass({displayName: "ArticleImage",
 
