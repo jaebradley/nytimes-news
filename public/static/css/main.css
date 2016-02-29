@@ -15,6 +15,7 @@
     margin-top: -50px;
     display: inline-block;
     float: left;
+    height: 90px;
   }
 
     .sidebar-item-active {
@@ -27,6 +28,7 @@
       .sidebar-item-active .sidebar-item-name {
         border-bottom: 1px solid;
         display: inline-block;
+        float: right;
       }
 
     .sidebar-item {
@@ -35,9 +37,13 @@
       margin-top: 20px;
     }
 
+    .sidebar-item .sidebar-item-name {
+      display: inline-block;
+      float: right;
+    }
+
     .sidebar-item .sidebar-item-name:hover {
       color: gold;
-      display: inline-block;
     }
 
   .articles-container {
