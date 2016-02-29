@@ -9,20 +9,21 @@
 }
 
   .sidebar {
-    border-right: 1px solid;
+    border-right: 2px solid;
     position: absolute;
     top: 50%;
-    margin-top: -50px;
+    margin-top: -85px;
     display: inline-block;
     float: left;
-    height: 90px;
+    height: 160px;
+    font-size: 1.5em;
   }
 
     .sidebar-item-active {
       list-style-type: none;
       padding-right: 5px;
-      margin-bottom: 20px;
-      margin-top: 20px;
+      margin-bottom: 40px;
+      margin-top: 40px;
       float: right;
     }
       .sidebar-item-active .sidebar-item-name {
@@ -34,7 +35,7 @@
     .sidebar-item {
       list-style-type: none;
       padding-right: 5px;
-      margin-top: 20px;
+      margin-top: 40px;
     }
 
     .sidebar-item .sidebar-item-name {
@@ -53,7 +54,7 @@
     float: right;
     top: 50%;
     display: inline-block;
-    margin-top: 45px;
+    margin-top: 15px;
   }
 
     .articles {

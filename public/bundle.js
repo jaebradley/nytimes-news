@@ -111,7 +111,10 @@
 	  render: function() {
 	    return (
 	      React.createElement("div", {className: "content"}, 
-	        React.createElement(Sidebar, {activeSidebarItemIndex: this.state.activeSidebarItemIndex, onClick: this.handleSidebarClick}), 
+	        React.createElement("div", {className: "sidebar-container"}, 
+	          React.createElement("img", {className: "sidebar-icon", src: "../static/img/icon.png", height: "25", width: "25"}), 
+	          React.createElement(Sidebar, {activeSidebarItemIndex: this.state.activeSidebarItemIndex, onClick: this.handleSidebarClick})
+	        ), 
 	        React.createElement("div", {className: "articles-container"}, 
 	          React.createElement(Articles, {articles: this.state.articles})
 	        )

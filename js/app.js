@@ -65,7 +65,10 @@ var App = React.createClass({
   render: function() {
     return (
       <div className="content">
-        <Sidebar activeSidebarItemIndex={this.state.activeSidebarItemIndex} onClick={this.handleSidebarClick} />
+        <div className="sidebar-container">
+          <img className="sidebar-icon" src="../static/img/icon.png" height="25" width="25" />
+          <Sidebar activeSidebarItemIndex={this.state.activeSidebarItemIndex} onClick={this.handleSidebarClick} />
+        </div>
         <div className={"articles-container"}>
           <Articles articles={this.state.articles} />
         </div>
