@@ -1,6 +1,7 @@
 var Dispatcher = require('../core/Dispatcher');
 var DeepCopy = require("deepcopy");
 var ArticleFetcher = require('../data/ArticleFetcher');
+var UrlShortenerFetcher = require('../data/UrlShortenerFetcher');
 
 var ActionConstants = require('../constants/ActionConstants');
 
@@ -9,9 +10,16 @@ var ActionCreator = {
     ArticleFetcher
       .fetchTopArticles(section)
       .then(function (topArticles) {
+        var articles = DeepCopy(topArticles);
+        articles.results.forEach(function(result) {
+          UrlShortenerFetcher.fetchShortUrl(result.url).then(function(data) {
+            result.url = data.id;
+          });
+        });
+
         Dispatcher.handleServerAction({
           actionType: ActionConstants.GET_TOP_ARTICLES,
-          articles: DeepCopy(topArticles)
+          articles: articles
         });
       });
   },

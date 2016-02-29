@@ -1,7 +1,8 @@
 "use es6";
 
 var React = require('react');
-var request = require('superagent');
+
+var UrlShortenerFetcher = require('../data/UrlShortenerFetcher');
 
 var ArticleImage = React.createClass({
 

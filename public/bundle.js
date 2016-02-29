@@ -52,8 +52,8 @@
 	var Store = __webpack_require__(159);
 	var ActionCreator = __webpack_require__(167);
 
-	var Sidebar = __webpack_require__(185);
-	var Articles = __webpack_require__(187);
+	var Sidebar = __webpack_require__(186);
+	var Articles = __webpack_require__(188);
 
 	var App = React.createClass({displayName: "App",
 
@@ -20523,6 +20523,7 @@
 	var Dispatcher = __webpack_require__(160);
 	var DeepCopy = __webpack_require__(168);
 	var ArticleFetcher = __webpack_require__(176);
+	var UrlShortenerFetcher = __webpack_require__(185);
 
 	var ActionConstants = __webpack_require__(165);
 
@@ -20531,9 +20532,16 @@
 	    ArticleFetcher
 	      .fetchTopArticles(section)
 	      .then(function (topArticles) {
+	        var articles = DeepCopy(topArticles);
+	        articles.results.forEach(function(result) {
+	          UrlShortenerFetcher.fetchShortUrl(result.url).then(function(data) {
+	            result.url = data.id;
+	          });
+	        });
+
 	        Dispatcher.handleServerAction({
 	          actionType: ActionConstants.GET_TOP_ARTICLES,
-	          articles: DeepCopy(topArticles)
+	          articles: articles
 	        });
 	      });
 	  },
@@ -25213,9 +25221,45 @@
 
 	"use es6";
 
+	var request = __webpack_require__(177);
+	var Promise = __webpack_require__(180).Promise;
+
+	var UrlShortenerFetcher = {
+	  endpoint: "https://www.googleapis.com/urlshortener/v1/url",
+	  key: "AIzaSyC7CpJR22eo5e10Mte0QATtEBVSVp3dByA",
+
+	  getUrl: function() {
+	    return this.endpoint + "?key=" + encodeURIComponent(this.key);
+	  },
+
+	  fetchShortUrl: function(longUrl) {
+	    var url = this.getUrl();
+	    return new Promise(function (resolve, reject) {
+	    request
+	      .post(url)
+	      .send({ 'longUrl': longUrl})
+	      .end(function (err, res) {
+	        if (res.status === 404) {
+	            reject();
+	          } else {
+	            resolve(JSON.parse(res.text));
+	          }
+	      });
+	    });
+	  },
+	};
+
+	module.exports = UrlShortenerFetcher;
+
+/***/ },
+/* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use es6";
+
 	var React = __webpack_require__(147);
 
-	var SidebarItem = __webpack_require__(186);
+	var SidebarItem = __webpack_require__(187);
 
 	const options = [
 	  'Top',
@@ -25253,7 +25297,7 @@
 	module.exports = Sidebar;
 
 /***/ },
-/* 186 */
+/* 187 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use es6";
@@ -25281,14 +25325,14 @@
 	module.exports = SidebarItem;
 
 /***/ },
-/* 187 */
+/* 188 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use es6";
 
 	var React = __webpack_require__(147);
 
-	var Article = __webpack_require__(188);
+	var Article = __webpack_require__(189);
 
 	var Articles = React.createClass({displayName: "Articles",
 
@@ -25329,16 +25373,16 @@
 	module.exports = Articles;
 
 /***/ },
-/* 188 */
+/* 189 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use es6";
 
 	var React = __webpack_require__(147);
 
-	var ArticleImage = __webpack_require__(189);
-	var ArticleTitle = __webpack_require__(190);
-	var ArticleAbstract = __webpack_require__(191);
+	var ArticleImage = __webpack_require__(190);
+	var ArticleTitle = __webpack_require__(191);
+	var ArticleAbstract = __webpack_require__(192);
 
 	var Article = React.createClass({displayName: "Article",
 
@@ -25359,13 +25403,14 @@
 	module.exports = Article;
 
 /***/ },
-/* 189 */
+/* 190 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use es6";
 
 	var React = __webpack_require__(147);
-	var request = __webpack_require__(177);
+
+	var UrlShortenerFetcher = __webpack_require__(185);
 
 	var ArticleImage = React.createClass({displayName: "ArticleImage",
 
@@ -25379,7 +25424,7 @@
 	module.exports = ArticleImage;
 
 /***/ },
-/* 190 */
+/* 191 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use es6";
@@ -25401,7 +25446,7 @@
 	module.exports = ArticleTitle;
 
 /***/ },
-/* 191 */
+/* 192 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use es6";
